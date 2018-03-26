@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Parking Live Places</title>
+    <style>
+      #map {
+        height: 100%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+     <script>
+
+      // This example displays a marker at the center of Australia.
+      // When the user clicks the marker, an info window opens.
+      
+	  var map;
+      var markersArray = [];
+      var markerBounds = new google.maps.LatLngBounds();
+      
+	  function clearOverlays() {
+		  markerBounds = new google.maps.LatLngBounds();
+		  if (markersArray) {
+			    for (i in markersArray) {
+			      markersArray[i].setMap(null);
+			    }
+			  }
+		  
+		  markersArray = [];
+		}
+      
+	  function addMarkers(geoTags){
+		clearOverlays(); 
+		for (var i=0; i<geoTags.length;i++){
+			geoTagsTemp = geoTags[i];
+			
+			var m = {lat: geoTagsTemp.latitude, lng: geoTagsTemp.longitude};
+			var marker = new google.maps.Marker({
+				position: m,
+				map: map
+			});
+			
+			if (geoTagsTemp.isFirst == true){
+				marker.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
+			} else if (geoTagsTemp.isLast == true){
+				marker.setIcon('http://maps.google.com/mapfiles/ms/icons/green-dot.png');
+			}
+				
+			markerBounds.extend(marker.getPosition());	
+			markersArray.push(marker);
+			
+		    var content = "PC: "+geoTagsTemp.tmc.PC+'<br/>'+"DE: "+geoTagsTemp.tmc.DE+ '<br/>'+"QD: "+geoTagsTemp.tmc.QD;     
+		    var infowindow = new google.maps.InfoWindow()
+		    
+		    google.maps.event.addListener(marker,'click', (function(marker,content,infowindow){ 
+		        return function() {
+		            infowindow.setContent(content);
+		            infowindow.open(map, marker);
+		        };
+		    })(marker, content, infowindow));
+		}
+		
+		map.fitBounds(markerBounds);
+	  }
+
+      function initMap() {
+	  
+	  	var pittsburgh = {lat: 40.4401962, lng: -80.0011212};
+	   		map = new google.maps.Map(document.getElementById('map'), {
+          	zoom: 17,
+          	center: pittsburgh
+        });
+
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDDO3vN1CGPR58k_TOLZzrJauDyQ0uTrQY&libraries=visualization&callback=initMap">
+    </script>
+  </head>
+  <body>
+    <div id="map"></div>
+
+  </body>
+</html>

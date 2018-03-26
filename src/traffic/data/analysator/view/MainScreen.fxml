@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.web.WebView?>
+
+<AnchorPane prefHeight="434.0" prefWidth="663.0" style="-fx-background-color: #ffff;" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="traffic.data.analysator.view.MainScreenController">
+   <children>
+      <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="50.0" prefWidth="629.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <HBox prefHeight="50.0" prefWidth="663.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Button fx:id="btnChoose" mnemonicParsing="false" onAction="#showChooseDialog" text="btnChoose" textAlignment="CENTER" />
+                  <Label fx:id="infoLabel" prefHeight="26.0" prefWidth="529.0" text="Label" />
+               </children>
+               <padding>
+                  <Insets top="10.0" />
+               </padding>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="20.0" layoutY="50.0" prefHeight="65.0" prefWidth="623.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="50.0">
+         <children>
+            <TextField fx:id="tfR1" layoutX="14.0" layoutY="33.0" prefHeight="25.0" prefWidth="116.0" AnchorPane.leftAnchor="8.0" />
+            <TextField fx:id="tfR2" layoutX="136.0" layoutY="33.0" prefWidth="116.0" />
+            <TextField fx:id="tfR3" layoutX="264.0" layoutY="33.0" prefWidth="116.0" />
+            <Label fx:id="lblRadius" layoutX="226.0" layoutY="6.0" prefHeight="17.0" prefWidth="389.0" text="lblRadius" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="6.0" />
+         </children></AnchorPane>
+      <Button fx:id="btnProcess" layoutX="20.0" layoutY="129.0" maxWidth="1000.0" mnemonicParsing="false" onAction="#processFile" prefHeight="36.0" prefWidth="209.0" text="Button Process" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="129.0" />
+      <WebView fx:id="mapView" layoutX="20.0" layoutY="128.0" prefHeight="216.0" prefWidth="623.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="211.0" />
+      <TextArea fx:id="logTextArea" layoutX="20.0" layoutY="190.0" prefHeight="231.0" prefWidth="623.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="190.0" />
+      <Button fx:id="btnMerge" layoutX="341.0" layoutY="129.0" maxWidth="1000.0" mnemonicParsing="false" onAction="#mergeTrafficAndParking" prefHeight="36.0" prefWidth="193.0" text="Button Merge" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="129.0" />
+      <Button fx:id="btnFinalMerge" layoutX="241.0" layoutY="129.0" mnemonicParsing="false" onAction="#merge" prefHeight="36.0" prefWidth="193.0" text="CSV Merge" AnchorPane.topAnchor="129.0" />
+   </children>
+</AnchorPane>
