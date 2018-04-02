@@ -58,7 +58,7 @@ public class TrafficCsvProcessor {
 		this.trafficRecords = Util.parseCSVFile(trafficCSVFile);
 	}
 
-	public void processCSVFile() {
+	public void processCSVFile() throws Exception {
 
 		for (HereTrafficRecord htr : this.trafficRecords) {
 			for (Lot lot : this.lotsForTheCity) {

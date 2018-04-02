@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
+import org.apache.log4j.Logger;
+
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -35,6 +37,8 @@ import traffic.parking.merge.MergeEventListener;
 import traffic.parking.merge.TrafficParkingMerge;
 
 public class MainScreenController {
+	
+	static Logger logger = Logger.getLogger(MainScreenController.class.getName());
 
 	@FXML
 	private Button btnChoose;
@@ -156,46 +160,50 @@ public class MainScreenController {
     	
     	logTextArea.appendText("Start processing csv traffic files ...\n");
     	new Thread(() -> {
-    	    // Insert some method call here.
+    		// Insert some method call here.
     		ArrayList<File> files = new ArrayList<File>();
     		Util.listDirectory(directoryRoot, files);
 
-    		int currentFile = 0;
-    		final int totalFiles = files.size();
-    		final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-    		for (File file : files) {
-    			currentFile++;
-    			
-    			final String currentFileName = file.getName();
-    			final int currentFileTemp = currentFile;;
-    			City city = Util.getCityFromFileName(file.getName());
-    			
-    			if (city!=null){
-    				Platform.runLater(new Runnable() {
-    		            @Override public void run() {
-    		            	logTextArea.appendText(String.format("%s: Processing %s/%s, file %s ...\n",
-									dateFormat.format(new Date()), currentFileTemp, totalFiles, currentFileName));
-    		            }
-    		        });
-    				TrafficCsvProcessor tcp = new TrafficCsvProcessor(city, file, radius_1,
-    						radius_2, radius_3);
-    				tcp.processCSVFile();
-    			} else {
-    				Platform.runLater(new Runnable() {
-    		            @Override public void run() {
-							logTextArea.appendText(String.format("%s: Processing %s/%s, file %s don't match the template \n",
-									dateFormat.format(new Date()), currentFileTemp, totalFiles, currentFileName));
-						}
-    		        });
-    			}
-    		}	
-    		
-    		Platform.runLater(new Runnable() {
-	            @Override public void run() {
-	            	logTextArea.appendText(String.format("%s: Finish processing files \n",
-							dateFormat.format(new Date())));
-	            }
-	        });
+    		try {
+    			int currentFile = 0;
+    			final int totalFiles = files.size();
+    			final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+    			for (File file : files) {
+    				currentFile++;
+
+    				final String currentFileName = file.getName();
+    				final int currentFileTemp = currentFile;;
+    				City city = Util.getCityFromFileName(file.getName());
+
+    				if (city!=null){
+    					Platform.runLater(new Runnable() {
+    						@Override public void run() {
+    							logTextArea.appendText(String.format("%s: Processing %s/%s, file %s ...\n",
+    									dateFormat.format(new Date()), currentFileTemp, totalFiles, currentFileName));
+    						}
+    					});
+    					TrafficCsvProcessor tcp = new TrafficCsvProcessor(city, file, radius_1,
+    							radius_2, radius_3);
+    					tcp.processCSVFile();
+    				} else {
+    					Platform.runLater(new Runnable() {
+    						@Override public void run() {
+    							logTextArea.appendText(String.format("%s: Processing %s/%s, file %s don't match the template \n",
+    									dateFormat.format(new Date()), currentFileTemp, totalFiles, currentFileName));
+    						}
+    					});
+    				}
+    			}	
+
+    			Platform.runLater(new Runnable() {
+    				@Override public void run() {
+    					logTextArea.appendText(String.format("%s: Finish processing files \n",
+    							dateFormat.format(new Date())));
+    				}
+    			});
+    		} catch (Exception e){
+    			logger.error(e.getMessage(),e);
+    		}
     		
     	}).start();
     }
